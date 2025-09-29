@@ -1,9 +1,14 @@
-import { IMAGES } from "@/_lib/constants/images";
-import { Input } from "@/_components/ui/input";
+"use client";
+
 import { Button } from "@/_components/ui/button";
+import { Input } from "@/_components/ui/input";
+import { useSignin } from "@/_hooks/query/users";
+import { IMAGES } from "@/_lib/constants/images";
+import { PATH } from "@/_lib/constants/path";
 import Image from "next/image";
 import Link from "next/link";
-import { PATH } from "@/_lib/constants/path";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export const styles = {
   formInput: "w-full bg-neutral-100 text-black",
@@ -17,6 +22,33 @@ export const styles = {
 } as const;
 
 export default function LoginPage() {
+  const [error, setError] = useState("");
+  const { mutate: signinMutation } = useSignin();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const accountId = formData.get("accountId") as string;
+    const password = formData.get("password") as string;
+
+    if (!accountId || !password) {
+      setError("아이디와 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await signinMutation({ accountId, password });
+      console.log(response);
+      setError("");
+      router.push(PATH.MAIN);
+    } catch (err: any) {
+      console.log(err);
+      setError(err.response.data.message);
+    }
+  };
+
   return (
     <div className={styles.authContainer}>
       <div className="w-full max-w-md">
@@ -33,12 +65,17 @@ export default function LoginPage() {
             </span>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="id" className={styles.formLabel}>
                 아이디
               </label>
-              <Input id="id" type="text" placeholder="아이디를 입력하세요" />
+              <Input
+                id="accountId"
+                name="accountId"
+                type="text"
+                placeholder="아이디를 입력하세요"
+              />
             </div>
 
             <div>
@@ -47,12 +84,15 @@ export default function LoginPage() {
               </label>
               <Input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="비밀번호를 입력하세요"
               />
             </div>
-
-            <Button className="w-full mt-6">로그인</Button>
+            {error && <p className="text-red-500">{error}</p>}
+            <Button className="w-full mt-6" type="submit">
+              로그인
+            </Button>
           </form>
           <div className="mt-6 text-center space-y-2">
             <p className="text-sm text-neutral-400">
