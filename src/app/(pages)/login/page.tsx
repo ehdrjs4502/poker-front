@@ -3,12 +3,13 @@
 import { Button } from "@/_components/ui/button";
 import { Input } from "@/_components/ui/input";
 import { useSignin } from "@/_hooks/query/users";
+import { tokenStorage } from "@/_lib/auth";
 import { IMAGES } from "@/_lib/constants/images";
 import { PATH } from "@/_lib/constants/path";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { toast } from "sonner";
 
 export const styles = {
   formInput: "w-full bg-neutral-100 text-black",
@@ -22,7 +23,6 @@ export const styles = {
 } as const;
 
 export default function LoginPage() {
-  const [error, setError] = useState("");
   const { mutate: signinMutation } = useSignin();
   const router = useRouter();
 
@@ -34,19 +34,22 @@ export default function LoginPage() {
     const password = formData.get("password") as string;
 
     if (!accountId || !password) {
-      setError("아이디와 비밀번호를 모두 입력해주세요.");
+      toast.error("아이디와 비밀번호를 모두 입력해주세요.");
       return;
     }
 
-    try {
-      const response = await signinMutation({ accountId, password });
-      console.log(response);
-      setError("");
-      router.push(PATH.MAIN);
-    } catch (err: any) {
-      console.log(err);
-      setError(err.response.data.message);
-    }
+    signinMutation(
+      { accountId, password },
+      {
+        onSuccess: (response) => {
+          tokenStorage.set(response.data.token);
+          router.push(PATH.MAIN);
+        },
+        onError: (err: any) => {
+          toast.error(err.response.data.message);
+        },
+      }
+    );
   };
 
   return (
@@ -89,7 +92,6 @@ export default function LoginPage() {
                 placeholder="비밀번호를 입력하세요"
               />
             </div>
-            {error && <p className="text-red-500">{error}</p>}
             <Button className="w-full mt-6" type="submit">
               로그인
             </Button>
