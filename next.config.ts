@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-export const baseUrl =
-  "https://unremunerative-birgit-denticulately.ngrok-free.dev";
+export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const path = "/api/v1"; // 기본 경로
 
 const nextConfig: NextConfig = {
