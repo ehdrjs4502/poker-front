@@ -22,7 +22,7 @@ export type UpdateRoomRequest = CreateRoomRequest;
 
 export const getRoomList = async () => {
   const response = await apiClient.get("/rooms/list");
-  return response.data.rooms as RoomListResponse[];
+  return response.data.data.rooms as RoomListResponse[];
 };
 
 export const createRoom = async (request: CreateRoomRequest) => {
