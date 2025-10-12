@@ -4,14 +4,14 @@ interface Props {
   roomName: string;
   playerCount: number;
   maxPlayerCount: number;
-  credit: number;
+  bigBlind: number;
 }
 
 export default function RoomCard({
   roomName,
   playerCount,
   maxPlayerCount,
-  credit,
+  bigBlind,
 }: Props) {
   return (
     <div className="flex flex-col gap-2 border border-neutral-600 rounded-lg p-4">
@@ -23,7 +23,7 @@ export default function RoomCard({
           {playerCount} / {maxPlayerCount} Players
         </span>
         <span className="text-sm text-gray-500 text-white">
-          {credit} Credits
+          {bigBlind} Big Blind
         </span>
       </div>
       <Button className="w-full">Join Game</Button>
