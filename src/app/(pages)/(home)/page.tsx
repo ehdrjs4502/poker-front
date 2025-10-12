@@ -1,5 +1,6 @@
 "use client";
 
+import CreateRoomDialog from "@/_components/create-room-dialog";
 import RoomCard from "@/_components/room-card";
 import { Button } from "@/_components/ui/button";
 import UserProfile from "@/_components/user-profile";
@@ -16,7 +17,7 @@ export default function Home() {
       <div className="flex flex-col gap-4 mt-10">
         <div className="flex items-center justify-end gap-4">
           <Button onClick={() => refetch()}>Refresh</Button>
-          <Button>Create Room</Button>
+          <CreateRoomDialog />
         </div>
         <div className="flex flex-col gap-4">
           {roomList && roomList.length > 0 ? (
