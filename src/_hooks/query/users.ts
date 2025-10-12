@@ -1,30 +1,22 @@
-import { getMyInfo, signin, signup } from "@/_api/users";
+import {
+  getMyInfo,
+  signin,
+  SigninRequest,
+  signup,
+  SignupRequest,
+} from "@/_api/users";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./keys";
 
 export const useSignin = () => {
   return useMutation({
-    mutationFn: ({
-      accountId,
-      password,
-    }: {
-      accountId: string;
-      password: string;
-    }) => signin(accountId, password),
+    mutationFn: ({ request }: { request: SigninRequest }) => signin(request),
   });
 };
 
 export const useSignup = () => {
   return useMutation({
-    mutationFn: ({
-      accountId,
-      password,
-      nickname,
-    }: {
-      accountId: string;
-      password: string;
-      nickname: string;
-    }) => signup(accountId, password, nickname),
+    mutationFn: ({ request }: { request: SignupRequest }) => signup(request),
   });
 };
 

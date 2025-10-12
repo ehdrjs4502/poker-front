@@ -39,7 +39,7 @@ export default function LoginPage() {
     }
 
     signinMutation(
-      { accountId, password },
+      { request: { accountId, password } },
       {
         onSuccess: (response) => {
           tokenStorage.set(response.data.token);

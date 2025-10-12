@@ -37,7 +37,7 @@ export default function SignupPage() {
     }
 
     signupMutation(
-      { accountId, password, nickname },
+      { request: { accountId, password, nickname } },
       {
         onSuccess: () => {
           toast.success("회원가입에 성공했습니다.");
