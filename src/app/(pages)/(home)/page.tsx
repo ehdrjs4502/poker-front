@@ -1,9 +1,8 @@
 "use client";
 
-import CreateRoomDialog from "@/_components/create-room-dialog";
-import RoomCard from "@/_components/room-card";
+import { CreateRoomDialog, RoomCard } from "@/_components/room";
 import { Button } from "@/_components/ui/button";
-import UserProfile from "@/_components/user-profile";
+import { UserProfile } from "@/_components/common";
 import { useGetRoomList } from "@/_hooks/query/rooms";
 
 export default function Home() {
@@ -24,6 +23,7 @@ export default function Home() {
             roomList.map((room) => (
               <RoomCard
                 key={room.roomId}
+                roomId={room.roomId}
                 roomName={room.roomName}
                 playerCount={room.currentPlayerCount}
                 maxPlayerCount={room.maxUserCount}
