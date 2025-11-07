@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface UserProfileProps {
   userName: string;
@@ -22,3 +22,4 @@ export default function UserProfile({
     </div>
   );
 }
+

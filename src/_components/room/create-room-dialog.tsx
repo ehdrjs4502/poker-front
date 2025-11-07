@@ -1,14 +1,7 @@
 import { DialogClose } from "@radix-ui/react-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { useCreateRoom } from "@/_hooks/query/rooms";
 import { toast } from "sonner";
 
@@ -40,8 +33,12 @@ export default function CreateRoomDialog() {
           //TODO: 방 생성 후 방으로 이동
           console.log(data.data.roomId);
         },
-        onError: (err: any) => {
-          toast.error(err.response.data.message);
+        onError: (err: unknown) => {
+          const errorMessage =
+            err && typeof err === "object" && "response" in err
+              ? (err as { response: { data: { message: string } } }).response.data.message
+              : "방 생성에 실패했습니다.";
+          toast.error(errorMessage);
         },
       }
     );
@@ -68,14 +65,7 @@ export default function CreateRoomDialog() {
             </div>
             <div className="grid gap-2">
               <label htmlFor="maxPlayerCount">최대 플레이어 수</label>
-              <Input
-                id="maxPlayerCount"
-                name="maxPlayerCount"
-                type="number"
-                min={2}
-                max={8}
-                defaultValue={2}
-              />
+              <Input id="maxPlayerCount" name="maxPlayerCount" type="number" min={2} max={8} defaultValue={2} />
             </div>
             <div className="grid gap-2">
               <label htmlFor="bbAmount">빅 블라인드</label>
