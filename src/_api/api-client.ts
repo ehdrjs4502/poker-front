@@ -6,6 +6,7 @@ const apiClient = axios.create({
   headers: {
     "ngrok-skip-browser-warning": "true",
   },
+  withCredentials: true, // 쿠키 자동 전송 활성화
 });
 
 export default apiClient;
