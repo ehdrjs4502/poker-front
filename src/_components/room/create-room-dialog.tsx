@@ -4,9 +4,12 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useCreateRoom } from "@/_hooks/query/rooms";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { PATH } from "@/_lib/constants/path";
 
 export default function CreateRoomDialog() {
   const { mutate: createRoom } = useCreateRoom();
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,6 +34,7 @@ export default function CreateRoomDialog() {
         onSuccess: (data) => {
           toast.success("방 생성에 성공했습니다.");
           //TODO: 방 생성 후 방으로 이동
+          router.push(PATH.ROOM(data.data.roomId));
           console.log(data.data.roomId);
         },
         onError: (err: unknown) => {
