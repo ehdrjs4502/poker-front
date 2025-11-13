@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
+// import SockJS from "sockjs-client"; ← 제거
 
 interface UseWebSocketProps {
   url: string;
@@ -19,9 +19,9 @@ export function useWebSocket({
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // STOMP 클라이언트 생성
+    // STOMP 클라이언트 생성 (네이티브 WebSocket)
     const client = new Client({
-      webSocketFactory: () => new SockJS(url),
+      brokerURL: url,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,

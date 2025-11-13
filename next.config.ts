@@ -1,12 +1,14 @@
 import type { NextConfig } from "next";
 
-export const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";;
+export const baseUrl =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 const path = "/api/v1"; // 기본 경로
 
 const nextConfig: NextConfig = {
   /* config options here */
   rewrites: async () => {
     return [
+      // API 경로 프록시
       {
         source: `${path}/:path*`,
         destination: `${baseUrl}${path}/:path*`,
